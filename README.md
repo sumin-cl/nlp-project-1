@@ -14,5 +14,5 @@ Input via Textdatei, Output via JSON.
 ### Schritte zur Einrichtung der Virtual Environment (venv), um die Abhängigkeiten (packages) zu installieren:
 
 1. Erstelle die venv: `python -n venv venv`
-2. Aktiviere sie: `.\venv\Scripts\Acitvate.ps1` (Windows) oder `source venv/bin/activate` (Linux/Mac)
+2. Aktiviere sie: `.\venv\Scripts\Activate.ps1` (Windows) oder `source venv/bin/activate` (Linux/Mac)
 3. Installiere die Pakete: `pip install -r requirements.txt`
