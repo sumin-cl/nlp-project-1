@@ -1,11 +1,12 @@
 {
     "detection_result": [
-        "de",
-        -344.77984619140625
+        "ko",
+        -660.668051481247
     ],
     "text_statistics": {
-        "num_words": 12,
+        "num_words": 10,
         "num_sentences": 1,
-        "avg_word_len": 4.583333333333333
-    }
+        "avg_word_len": 3.9
+    },
+    "archaic_characters": 0
 }
