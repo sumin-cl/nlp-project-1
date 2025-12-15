@@ -1,5 +1,5 @@
 from preprocess import load_text, preprocess_text
-from analysis import analyze_features, decompose_syllable_block, detect_archaic_chars
+from analysis import analyze_features, get_decomposed_unicode, detect_archaic_with_unicode, detect_non_standard_with_unicode#, decompose_syllable_block, detect_archaic_chars
 import nltk
 nltk.download('punkt_tab')
 import langid
@@ -25,17 +25,24 @@ if __name__ == "__main__":
     input_file = 'okm_sample.txt'
     input_text = load_text(input_file)
     tokens = preprocess_text(input_text)
+    decomp = get_decomposed_unicode(input_text)
     print(tokens)
     lang_detect = detect_language(input_text)
     print(f'Language: {lang_detect[0]}, Confidence: {lang_detect[1]}')
     features = analyze_features(input_text)
     print(f'Number of Words: {features.get("num_words")}, Number of Sentences: {features.get("num_sentences")}, Average word length: {features.get("avg_word_len")}')
-    count_archaic_chars = detect_archaic_chars(input_text)
-    print(f'Count of Arae-a: {count_archaic_chars}')
+    count = detect_archaic_with_unicode(decomp)
+    print(f'Count of Arae-a: {count}')
+    non_std = detect_non_standard_with_unicode(decomp)
+    print(f'Non-standard characters: {non_std}')
+    #count_archaic_chars = detect_archaic_chars(input_text)
+    #print(f'Count of Arae-a: {count_archaic_chars}')
     output_data = {
         "detection_result": lang_detect,
         "text_statistics": features,
-        "archaic_characters" : count_archaic_chars
+        #"archaic_characters" : count_archaic_chars
+        "archaic_characters": non_std
+
     }
     output_file = open("test.json", "w")
     json.dump(output_data, output_file, indent = 4, sort_keys = False)
