@@ -1,7 +1,11 @@
 # Spracherkenner
 Dieses Mini-Projekt soll erkennen in welcher Sprache ein Text geschrieben ist.
 
-Geplant auf historische Sprachvarianten auszuweiten.
+Es unterscheidet modernes und historisches Koreanisch.
+
+Methode: Zerlegung in Jamo (NFD) und Abgleich mit einer Liste moderner Standard-Zeichen
+
+Erkennt auch Hanja und Arae-a
 
 Input via Textdatei, Output via JSON.
 
