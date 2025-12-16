@@ -8,7 +8,7 @@
         "num_sentences": 1,
         "avg_word_len": 3.9
     },
-    "archaic_characters": {
+    "non_standard": {
         "SPACE": 9,
         "CJK UNIFIED IDEOGRAPH-767E": 1,
         "CJK UNIFIED IDEOGRAPH-5104": 1,
@@ -20,5 +20,8 @@
         "CJK UNIFIED IDEOGRAPH-654E": 1,
         "HANGUL JONGSEONG NIEUN": 1,
         "HANGUL JONGSEONG TIKEUT": 1
+    },
+    "archaic_hangul": {
+        "HANGUL JUNGSEONG ARAEA": 7
     }
 }

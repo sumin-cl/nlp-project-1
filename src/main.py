@@ -35,13 +35,15 @@ if __name__ == "__main__":
     print(f'Count of Arae-a: {count}')
     non_std = detect_non_standard_with_unicode(decomp)
     print(f'Non-standard characters: {non_std}')
-    #count_archaic_chars = detect_archaic_chars(input_text)
+    archaic_hangul = detect_archaic_with_unicode(non_std)
+    print(f'Archaic Hangul: {archaic_hangul}')
     #print(f'Count of Arae-a: {count_archaic_chars}')
     output_data = {
         "detection_result": lang_detect,
         "text_statistics": features,
         #"archaic_characters" : count_archaic_chars
-        "archaic_characters": non_std
+        "non_standard": non_std,
+        "archaic_hangul": archaic_hangul
 
     }
     output_file = open("test.json", "w", encoding = 'utf-8')
