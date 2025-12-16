@@ -44,6 +44,6 @@ if __name__ == "__main__":
         "archaic_characters": non_std
 
     }
-    output_file = open("test.json", "w")
-    json.dump(output_data, output_file, indent = 4, sort_keys = False)
+    output_file = open("test.json", "w", encoding = 'utf-8')
+    json.dump(output_data, output_file, ensure_ascii = False, indent = 4, sort_keys = False)
     output_file.close()

@@ -17,7 +17,12 @@ HANGUL_VOWELS = {
 # All Hangul characters (40 total)
 HANGUL_CHARACTERS = HANGUL_CONSONANTS | HANGUL_VOWELS
 
-HANGUL_UNICODE_NAMES = {unicodedata.name(char, "UNNAMED") for char in HANGUL_CHARACTERS}
+# Also include conjoining jamo (choseong/jungseong) ranges so decomposed
+# syllables (NFD) and compatibility jamo compare correctly.
+CHOSEONG = [chr(cp) for cp in range(0x1100, 0x1113)]  # 19 initial consonants
+JUNGSEONG = [chr(cp) for cp in range(0x1161, 0x1176)]  # 21 medial vowels
+
+HANGUL_UNICODE_NAMES = set({unicodedata.name(char, "UNNAMED") for char in (HANGUL_CHARACTERS | set(CHOSEONG) | set(JUNGSEONG))})
 
 arae_a_char = 'ㆍ'
 
@@ -68,10 +73,11 @@ def detect_archaic_with_unicode(decomposed):
     return count
 
 def detect_non_standard_with_unicode(decomposed):
-
     non_standard_counts = {}
-    #print(decomposed_unicode)
-    for ch in decomposed:
-        if ch not in HANGUL_CHARACTERS:
+
+    decomposed_names = [unicodedata.name(char, "UNNAMED") for char in decomposed]
+
+    for ch in decomposed_names:
+        if ch not in HANGUL_UNICODE_NAMES:
             non_standard_counts[ch] = non_standard_counts.get(ch, 0) + 1
     return non_standard_counts
