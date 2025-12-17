@@ -25,6 +25,8 @@ Input via Textdatei, Output via JSON.
 
 ![CLI output](example_output_cli.png)
 
-# JSON
+## JSON
 
-![Beispieloutput JSON](example_output_json.png)
+<img
+src="example_output_json.png"
+alt="JSON Output" width="500">
