@@ -1,5 +1,5 @@
-from preprocess import load_text, preprocess_text
-from analysis import analyze_features, get_decomposed_unicode, detect_archaic_with_unicode, detect_non_standard_with_unicode#, decompose_syllable_block, detect_archaic_chars
+from src.preprocess import load_text, preprocess_text
+from src.analysis import analyze_features, get_decomposed_unicode, detect_archaic_with_unicode, detect_non_standard_with_unicode#, decompose_syllable_block, detect_archaic_chars
 import nltk
 nltk.download('punkt_tab')
 import langid
@@ -22,7 +22,7 @@ def dict_to_json(input, indent=4, sort_keys=False):
     return json_str
 
 if __name__ == "__main__":
-    input_file = 'okm_sample.txt'
+    input_file = 'data/okm_sample.txt'
     input_text = load_text(input_file)
     tokens = preprocess_text(input_text)
     decomp = get_decomposed_unicode(input_text)
@@ -46,6 +46,6 @@ if __name__ == "__main__":
         "archaic_hangul": archaic_hangul
 
     }
-    output_file = open("test.json", "w", encoding = 'utf-8')
+    output_file = open('data/test.json', 'w', encoding = 'utf-8')
     json.dump(output_data, output_file, ensure_ascii = False, indent = 4, sort_keys = False)
     output_file.close()
