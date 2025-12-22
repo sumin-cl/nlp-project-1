@@ -21,7 +21,7 @@ def dict_to_json(input, indent=4, sort_keys=False):
     json_str = json.dumps(input, indent=indent, sort_keys=sort_keys, ensure_ascii=False)
     return json_str
 
-if __name__ == "__main__":
+def run_cli():
     input_file = 'data/okm_sample.txt'
     input_text = load_text(input_file)
     tokens = preprocess_text(input_text)
@@ -49,3 +49,6 @@ if __name__ == "__main__":
     output_file = open('data/test.json', 'w', encoding = 'utf-8')
     json.dump(output_data, output_file, ensure_ascii = False, indent = 4, sort_keys = False)
     output_file.close()
+
+if __name__ == "__main__":
+    run_cli()
