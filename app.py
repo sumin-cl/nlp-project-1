@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 from src.analysis import analyze_features, get_decomposed_unicode, detect_non_standard_with_unicode, detect_archaic_with_unicode
+import json
 
 app = Flask(__name__)
 
@@ -25,6 +26,9 @@ def analyze_text():
 		archaic_hangul = detect_archaic_with_unicode(non_std)
 
 		return jsonify(result, non_std, archaic_hangul)
+
+		#result = jsonify(result, non_std, archaic_hangul)
+		#return f"<pre>{json.dumps(result, indent = 4, ensure_ascii = False)}</pre>"
 	
 	except Exception as e:
 		return jsonify({"error": str(e)})
