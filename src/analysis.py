@@ -1,5 +1,6 @@
 import nltk
 import unicodedata
+import langid
 # from jamo import h2j, j2hcj
 
 # Consonants (자음) - 19 characters
@@ -65,6 +66,32 @@ def detect_archaic_chars(text):
 '''
 
 ### Syllable block decomposition & character detection ###
+def analyze_text(input_text):
+    
+    lang_detect = detect_language(input_text)
+    features = analyze_features(input_text)
+    decomp = get_decomposed_unicode(input_text)
+    count = detect_archaic_with_unicode(decomp)
+    non_std = detect_non_standard_with_unicode(decomp)
+    archaic_hangul = detect_archaic_with_unicode(non_std)
+    print(f'Language: {lang_detect[0]}, Confidence: {lang_detect[1]}')
+    print(f'Number of Words: {features.get("num_words")}, Number of Sentences: {features.get("num_sentences")}, Average word length: {features.get("avg_word_len")}')
+    print(f'Count of Arae-a: {count}')
+    print(f'Non-standard characters: {non_std}')
+    print(f'Archaic Hangul: {archaic_hangul}')
+
+    output_data = {
+        "detection_result": lang_detect,
+        "text_statistics": features,
+        "non_standard": non_std,
+        "archaic_hangul": archaic_hangul
+    }
+    return output_data
+
+def detect_language(input_txt):
+    lang, confidence = langid.classify(input_txt)
+    return lang, confidence
+
 def get_decomposed_unicode(text):  # Unicode implement
     decomposed = unicodedata.normalize('NFD', text)
     
