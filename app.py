@@ -1,5 +1,5 @@
-from flask import Flask, request, jsonify
-from src.analysis import analyze_features, get_decomposed_unicode, detect_non_standard_with_unicode, detect_archaic_with_unicode
+from flask import Flask, request, render_template, jsonify
+from src.analysis import analysis_head
 import json
 
 app = Flask(__name__)
@@ -9,30 +9,21 @@ app.config['JSON_AS_ASCII'] = False
 
 @app.route("/")
 def home():
-	return "<h1>Mittelkoreanisch Analyse API<h1/><p>Benutze:/analyze?text=DeinText</p>"
+	return render_template('index.html')
 
-@app.route('/analyze')
+@app.route('/analyze', methods=['GET', 'POST'])
 def analyze_text():
-	input_text = request.args.get('text', '')
-
-	if not input_text:
-		return jsonify({"error": "Kein Text gefunden. Bitte ?text=... an die URL anhängen"})
-	
 	try:
-		result = analyze_features(input_text)
+		input_text = request.form['text_input']
+		
+		result_dictionary = analysis_head(input_text)
 
-		decomp = get_decomposed_unicode(input_text)
-		non_std = detect_non_standard_with_unicode(decomp)
-		archaic_hangul = detect_archaic_with_unicode(non_std)
+		json_output_string = json.dumps(result_dictionary, indent=4, ensure_ascii=False)
 
-		return jsonify(result, non_std, archaic_hangul)
+		return render_template('sample_template.html', result=json_output_string)
 
-		#result = jsonify(result, non_std, archaic_hangul)
-		#return f"<pre>{json.dumps(result, indent = 4, ensure_ascii = False)}</pre>"
-	
 	except Exception as e:
 		return jsonify({"error": str(e)})
-
 
 if __name__ == '__main__':
 	app.run(debug=True)

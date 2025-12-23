@@ -1,6 +1,7 @@
 import nltk
 import unicodedata
-# from jamo import h2j, j2hcj
+import langid
+from preprocess import load_text, preprocess_text
 
 # Consonants (자음) - 19 characters
 HANGUL_CONSONANTS = {
@@ -33,6 +34,15 @@ ARCHAIC_HANGUL_UNICODE_NAMES = set({unicodedata.name(char, "UNNAMED") for char i
 arae_a_char = 'ㆍ'
 
 ### Preprocessing ###
+def load_text(file_path):
+    with open(file_path, 'r', encoding='utf-8') as file:
+        return file.read()
+    
+def preprocess_text(input_txt):
+    text_lower = input_txt.lower()
+    tokens = nltk.word_tokenize(text_lower)
+    return tokens
+
 def analyze_features(text):
     word_list = nltk.word_tokenize(text)
     sentences = nltk.sent_tokenize(text)
@@ -47,24 +57,40 @@ def analyze_features(text):
         "avg_word_len": avg_word_len
     }
 
-'''
-def get_decomposed_syllable_block(text):  # External library
-    decomposed = h2j(text)
-
-    compat_jamo = j2hcj(decomposed)
-
-    return compat_jamo
-
-def detect_archaic_chars(text):
-
-    decomposed_text = get_decomposed_syllable_block(text)
-    
-    count = decomposed_text.count(arae_a_char)
-
-    return count
-'''
-
 ### Syllable block decomposition & character detection ###
+def analysis_head(input_text):
+    """Nimmt einen Text String und gibt einen Dictionary aus"""
+
+    tokens = preprocess_text(input_text)
+    decomp = get_decomposed_unicode(input_text)
+    print(tokens)
+
+    lang_detect = detect_language(input_text)
+    print(f'Language: {lang_detect[0]}, Confidence: {lang_detect[1]}')
+    features = analyze_features(input_text)
+    print(f'Number of Words: {features.get("num_words")}, Number of Sentences: {features.get("num_sentences")}, Average word length: {features.get("avg_word_len")}')
+    count = detect_archaic_with_unicode(decomp)
+    print(f'Count of Arae-a: {count}')
+    non_std = detect_non_standard_with_unicode(decomp)
+    print(f'Non-standard characters: {non_std}')
+    archaic_hangul = detect_archaic_with_unicode(non_std)
+    print(f'Archaic Hangul: {archaic_hangul}')
+
+    output_data = {
+        "detection_result": lang_detect,
+        "text_statistics": features,
+        "non_standard": non_std,
+        "archaic_hangul": archaic_hangul
+
+    }
+
+    return output_data
+
+
+def detect_language(input_txt):
+    lang, confidence = langid.classify(input_txt)
+    return lang, confidence
+
 def get_decomposed_unicode(text):  # Unicode implement
     decomposed = unicodedata.normalize('NFD', text)
     
