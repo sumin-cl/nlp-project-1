@@ -1,0 +1,18 @@
+{
+    "detection_result": [
+        "ko",
+        -68.87744092941284
+    ],
+    "text_statistics": {
+        "num_words": 1,
+        "num_sentences": 1,
+        "avg_word_len": 7.0
+    },
+    "non_standard": {
+        "HANGUL JUNGSEONG ARAEA": 2,
+        "HANGUL JONGSEONG TIKEUT": 1
+    },
+    "archaic_hangul": {
+        "HANGUL JUNGSEONG ARAEA": 2
+    }
+}
