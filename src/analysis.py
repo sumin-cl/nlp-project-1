@@ -1,7 +1,6 @@
 import nltk
 import unicodedata
 import langid
-from preprocess import load_text, preprocess_text
 
 # Consonants (자음) - 19 characters
 HANGUL_CONSONANTS = {
