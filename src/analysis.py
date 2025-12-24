@@ -81,7 +81,10 @@ def analyze_text(input_text):
     print(f'Archaic Hangul: {archaic_hangul}')
 
     output_data = {
-        "detection_result": lang_detect,
+        "detection_result": {
+            "language": lang_detect[0],
+            "confidence": lang_detect[1]
+        },
         "text_statistics": features,
         "non_standard": non_std,
         "archaic_hangul": archaic_hangul

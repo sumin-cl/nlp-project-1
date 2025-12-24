@@ -1,8 +1,8 @@
 {
-    "detection_result": [
-        "ko",
-        -68.87744092941284
-    ],
+    "detection_result": {
+        "language": "ko",
+        "confidence": -68.87744092941284
+    },
     "text_statistics": {
         "num_words": 1,
         "num_sentences": 1,
