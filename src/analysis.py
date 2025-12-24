@@ -57,19 +57,13 @@ def analyze_features(text):
     }
 
 ### Syllable block decomposition & character detection ###
-def analyze_text(input_text):
+def analysis_head(input_text):
     
     lang_detect = detect_language(input_text)
     features = analyze_features(input_text)
     decomp = get_decomposed_unicode(input_text)
-    count = detect_archaic_with_unicode(decomp)
     non_std = detect_non_standard_with_unicode(decomp)
     archaic_hangul = detect_archaic_with_unicode(non_std)
-    print(f'Language: {lang_detect[0]}, Confidence: {lang_detect[1]}')
-    print(f'Number of Words: {features.get("num_words")}, Number of Sentences: {features.get("num_sentences")}, Average word length: {features.get("avg_word_len")}')
-    print(f'Count of Arae-a: {count}')
-    print(f'Non-standard characters: {non_std}')
-    print(f'Archaic Hangul: {archaic_hangul}')
 
     output_data = {
         "detection_result": {
