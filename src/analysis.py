@@ -57,34 +57,30 @@ def analyze_features(text):
     }
 
 ### Syllable block decomposition & character detection ###
-def analysis_head(input_text):
-    """Nimmt einen Text String und gibt einen Dictionary aus"""
-
-    tokens = preprocess_text(input_text)
-    decomp = get_decomposed_unicode(input_text)
-    print(tokens)
-
+def analyze_text(input_text):
+    
     lang_detect = detect_language(input_text)
-    print(f'Language: {lang_detect[0]}, Confidence: {lang_detect[1]}')
     features = analyze_features(input_text)
-    print(f'Number of Words: {features.get("num_words")}, Number of Sentences: {features.get("num_sentences")}, Average word length: {features.get("avg_word_len")}')
+    decomp = get_decomposed_unicode(input_text)
     count = detect_archaic_with_unicode(decomp)
-    print(f'Count of Arae-a: {count}')
     non_std = detect_non_standard_with_unicode(decomp)
-    print(f'Non-standard characters: {non_std}')
     archaic_hangul = detect_archaic_with_unicode(non_std)
+    print(f'Language: {lang_detect[0]}, Confidence: {lang_detect[1]}')
+    print(f'Number of Words: {features.get("num_words")}, Number of Sentences: {features.get("num_sentences")}, Average word length: {features.get("avg_word_len")}')
+    print(f'Count of Arae-a: {count}')
+    print(f'Non-standard characters: {non_std}')
     print(f'Archaic Hangul: {archaic_hangul}')
 
     output_data = {
-        "detection_result": lang_detect,
+        "detection_result": {
+            "language": lang_detect[0],
+            "confidence": lang_detect[1]
+        },
         "text_statistics": features,
         "non_standard": non_std,
         "archaic_hangul": archaic_hangul
-
     }
-
     return output_data
-
 
 def detect_language(input_txt):
     lang, confidence = langid.classify(input_txt)
