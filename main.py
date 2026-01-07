@@ -1,12 +1,22 @@
-from src.preprocess import load_text, preprocess_text
+from src.preprocess import load_text, get_tokens
 from src.analysis import analyze_text
 import nltk
-nltk.download('punkt_tab')
 import json
 import argparse
 
 from src.sentiment import sentiment_check
 from src.readability import flesch_simple_check
+from src.stylometry import get_adjectives
+
+try:
+    nltk.data.find('punkt_tab')
+    nltk.data.find('tokenizers/punkt')
+    nltk.data.find('taggers/averaged_perceptron_tagger_eng')
+
+except LookupError:
+    nltk.download('punkt_tab')
+    nltk.download('punkt')
+    nltk.download('averaged_perceptron_tagger_eng')
 
 def dict_to_json(input, indent=4, sort_keys=False):
     """
@@ -25,7 +35,7 @@ def run_cli(input_filepath, output_filepath, task):
 
     input_text = load_text(input_filepath)
 
-    tokens = preprocess_text(input_text)
+    tokens = get_tokens(input_text)
     #print(tokens)
     
     if task == 'korean':
@@ -40,7 +50,9 @@ def run_cli(input_filepath, output_filepath, task):
     elif task == 'sentiment':
         sentiment_scores = sentiment_check(input_text)
 
-        output_data = sentiment_scores
+        stylometry_adj = get_adjectives(input_text)
+
+        output_data = sentiment_scores, stylometry_adj
 
     with open(output_filepath, 'w', encoding='utf-8') as output_file:
         json.dump(output_data, output_file, ensure_ascii = False, indent = 4, sort_keys = False)
@@ -55,7 +67,7 @@ if __name__ == "__main__":
 
     parser.add_argument('-o', '--output', default='data/output/result.json', help='Pfad für die JSON-Datei (default: data/result.json)')
     
-    parser.add_argument('--task', choices=['korean', 'sentiment', 'readability'], default='korean', help='Choose analysis mode')
+    parser.add_argument('--task', choices=['korean', 'readability', 'sentiment'], default='korean', help='Choose analysis mode')
     
     args = parser.parse_args()
 
