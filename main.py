@@ -4,6 +4,7 @@ import nltk
 nltk.download('punkt_tab')
 import json
 import argparse
+import os
 
 from src.readability import flesch_simple_check
 
@@ -45,9 +46,9 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description='Analysiert eine Textdatei auf mittelkoreanische Merkmale')
 
-    parser.add_argument('input_filepath', default='data/okm_sample.txt', help='Pfad zur Input-Textdatei (default: data/okm_sample.txt).')
+    parser.add_argument('input_filepath', default='data/input/okm_sample.txt', help='Pfad zur Input-Textdatei (default: data/okm_sample.txt).')
 
-    parser.add_argument('-o', '--output', default='data/result.json', help='Pfad für die JSON-Datei (default: data/result.json)')
+    parser.add_argument('-o', '--output', default='data/output/result.json', help='Pfad für die JSON-Datei (default: data/result.json)')
     
     parser.add_argument('--task', choices=['korean', 'readability'], default='korean', help='Choose analysis mode')
     

@@ -1,4 +1,6 @@
 venv/
 __pycache__/
 *.pyc
-test.json
+data/output/*.json
+data/output/*.txt
+!data/output/.gitkeep
