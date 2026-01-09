@@ -7,7 +7,7 @@ import os
 
 from src.sentiment import sentiment_check
 from src.readability import flesch_simple_check
-from src.stylometry import get_adjectives
+from src.stylometry import get_style_stats
 
 try:
     nltk.data.find('punkt_tab')
@@ -53,7 +53,7 @@ def run_cli(input_filepath, task):
         print("...Full analysis...")
         add_result("readability", flesch_simple_check(input_text))
         add_result("sentiment", sentiment_check(input_text))
-        add_result("stylometry", get_adjectives(input_text))
+        add_result("stylometry", get_style_stats(input_text))
 
     elif task == 'readability':
         readability_score = flesch_simple_check(input_text)
@@ -64,7 +64,7 @@ def run_cli(input_filepath, task):
         add_result("sentiment", sentiment_scores)
 
     elif task == 'stylometry':
-        stylometry_adj = get_adjectives(input_text)
+        stylometry_adj = get_style_stats(input_text)
         add_result("stylometry", stylometry_adj)
 
     elif task == 'orthography':
@@ -92,6 +92,6 @@ if __name__ == "__main__":
         with open(args.output, "w", encoding="utf-8") as f:
             json.dump(output_data, f, indent=4, sort_keys=False, ensure_ascii=False)
             print("Gespeichert als JSON")
-            
+
     else:
         print(json.dumps(output_data, indent=4, ensure_ascii=False))
