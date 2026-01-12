@@ -1,32 +1,36 @@
-# Spracherkenner
-Dieses Mini-Projekt soll erkennen in welcher Sprache ein Text geschrieben ist.
+# NLP Text Analyzer Tool
 
-Es unterscheidet modernes und historisches Koreanisch.
-
-Methode: Zerlegung in Jamo (NFD) und Abgleich mit einer Liste moderner Standard-Zeichen.
-
-Erkennt auch Hanja und Arae-a.
-
-Input via Textdatei, Output via JSON.
+A modular Python CLI tool for analyzing text complexity, sentiment, stylometry and non-standard orthography.
 
 * Tools: Python 3.9
+* External Libraries: NLTK, langid, TextBlob, TextStat
 
-* Externe Libraries: NLTK, langid
+## Features
+
+* **Complexity Analysis:** Calculates Flesch Reading Ease score to determine text difficulty.
+* **Sentiment Analysis:** Detects polarity and subjectivity.
+* **Stylometry:** Analyzes Part-of-Speech (POS) distribution.
+
+Output will be given as JSON.
 
 ## Setup
+Clone the repository into your folder.
 
-### Schritte zur Einrichtung der Virtual Environment (venv), um die Abhängigkeiten (packages) zu installieren:
+### (Optional) Setting up the Virtual Environment:
+1. First time setup within the target directory: `python -n venv venv`
+2. Activation: `.\src\venv\Scripts\Activate.ps1` (Windows) or `source src/venv/bin/activate` (Linux/Mac)
+3. Install dependencies: `pip install -r requirements.txt`
 
-1. Erstellung der venv mit: `python -n venv venv`
-2. Aktivierung: `.\src\venv\Scripts\Activate.ps1` (Windows) oder `source src/venv/bin/activate` (Linux/Mac)
-3. Installation der erforderlichen Pakete: `pip install -r requirements.txt`
+## Usage
+Run the tool from the command line. You can pass a raw string or a file path.
 
-## Beispieloutput
+### 1. Full Analysis
+Generates a complete report including all metrics.
+`python main.py data/input/sample.txt --task all`
 
-![CLI output](assets/example_output_cli.png)
+### 2. Specific Tasks
+`python main.py data/input/sample.txt --task [complexity/sentiment/stylometry]`
 
-## JSON
-
-<img
-src="assets/example_output_json.png"
-alt="JSON Output" width="500">
+### 3. Save output to File
+Use the --output flag to save the JSON result like:
+`python main.py data/input/sample.txt --output data/output/example.txt --task all`
