@@ -13,4 +13,4 @@ def flesch_simple_check(txt):
     if score < 50: level = "Difficult"
     elif score < 30: level = "Confusing"
 
-    return {"score": score, "level": level}
+    return {"metric": "readability score", "score": score, "level": level}

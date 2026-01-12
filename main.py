@@ -5,6 +5,10 @@ import json
 import argparse
 import os
 
+from rich.console import Console
+from rich.table import Table
+from rich import print as rprint
+
 from src.sentiment import sentiment_check
 from src.readability import flesch_simple_check
 from src.stylometry import get_style_stats
@@ -79,6 +83,65 @@ def run_cli(input_filepath, task):
 
     return final_report
 
+def print_report(data):
+    console = Console()
+
+    console.print("\n[bold green] NLP analysis[/bold green]", justify = "center")
+    console.print(f"Task: [cyan]{data['meta']['task_requested']}[/cyan] | Length: [cyan]{data['meta']['text_length']} chars[/cyan]")
+    
+    analysis = data.get("analysis", {})
+    if "readability" in analysis:
+        read_score = analysis['readability']
+        table = Table(title="Readability/Complexity Analysis")
+        table.add_column("Metric", style="cyan")
+        table.add_column("Value", style="magenta")
+        table.add_column("Verdict", style="green")
+
+        table.add_row("Flesch Score", str(round(read_score['score'], 1)), read_score['level'])
+
+        console.print(table)
+        console.print("")
+
+    if "sentiment" in analysis:
+        sent = analysis['sentiment']
+        table = Table(title="Sentiment Analysis")
+        table.add_column("Metric", style="cyan")
+        table.add_column("Score", style="magenta")
+        table.add_column("Mood", style="green")
+
+        table.add_row("Polarity", str(sent['polarity_score']), sent['mood'])
+        table.add_row("Subjectivity", str(sent['subjectivity_score']), "0=Fact, 1=Opinion")
+
+        console.print(table)
+        console.print("")
+
+    if "stylometry" in analysis:
+        style_metric = analysis['stylometry']['details']
+        table = Table(title="Stylometry Analysis")
+        table.add_column("Category", style="cyan")
+        table.add_column("Count", style="magenta")
+        table.add_column("Top Words", style="yellow")
+
+        for cat, details in style_metric.items():
+            top_words = ", ".join(details["top_5"].keys())
+            table.add_row(cat.capitalize(), str(details["count"]), top_words)
+
+        console.print(table)
+        console.print("")
+
+    if "diversity" in analysis:
+        div = analysis['diversity']['stats']
+        table = Table(title="Lexical Diversity")
+        table.add_column("Metric", style="cyan")
+        table.add_column("Value", style="magenta")
+        
+        table.add_row("Unique Words", str(div["unique_words"]))
+        table.add_row("TTR (Variety)", str(div["ttr"]))
+        table.add_row("Unique Once (Hapax)", str(div["hapax_count"]))
+        
+        console.print(table)
+        console.print("")
+
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description='Analysiert eine Textdatei auf mittelkoreanische Merkmale')
@@ -92,6 +155,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     output_data = run_cli(args.input_filepath, args.task)
+
+    print_report(output_data)
 
     if args.output:
 
