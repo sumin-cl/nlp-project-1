@@ -8,6 +8,7 @@ import os
 from src.sentiment import sentiment_check
 from src.readability import flesch_simple_check
 from src.stylometry import get_style_stats
+from src.diversity import get_lex_div
 
 try:
     nltk.data.find('punkt_tab')
@@ -54,6 +55,7 @@ def run_cli(input_filepath, task):
         add_result("readability", flesch_simple_check(input_text))
         add_result("sentiment", sentiment_check(input_text))
         add_result("stylometry", get_style_stats(input_text))
+        add_result("diversity", get_lex_div(input_text))
 
     elif task == 'readability':
         readability_score = flesch_simple_check(input_text)
@@ -64,8 +66,12 @@ def run_cli(input_filepath, task):
         add_result("sentiment", sentiment_scores)
 
     elif task == 'stylometry':
-        stylometry_adj = get_style_stats(input_text)
-        add_result("stylometry", stylometry_adj)
+        stylometry = get_style_stats(input_text)
+        add_result("stylometry", stylometry)
+
+    elif task == "diversity":
+        lex_div = get_lex_div(input_text)
+        add_result("diversity", lex_div)
 
     elif task == 'orthography':
         orth_output = analyze_text(input_text)
@@ -81,7 +87,7 @@ if __name__ == "__main__":
 
     parser.add_argument('-o', '--output', default='data/output/result.json', help='Pfad für die JSON-Datei (default: data/result.json)')
     
-    parser.add_argument('--task', choices=['all', 'readability', 'sentiment', 'stylometry', 'orthography'], default='all', help='Choose analysis mode')
+    parser.add_argument('--task', choices=['all', 'readability', 'sentiment', 'stylometry', 'diversity', 'orthography'], default='all', help='Choose analysis mode')
     
     args = parser.parse_args()
 
