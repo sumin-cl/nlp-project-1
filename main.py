@@ -14,6 +14,8 @@ from src.readability import flesch_simple_check
 from src.stylometry import get_style_stats
 from src.diversity import get_lex_div
 
+from src.visualization import plot_pos_stats
+
 try:
     nltk.data.find('punkt_tab')
     nltk.data.find('tokenizers/punkt')
@@ -144,7 +146,7 @@ def print_report(data):
 
 if __name__ == "__main__":
 
-    parser = argparse.ArgumentParser(description='Analysiert eine Textdatei auf mittelkoreanische Merkmale')
+    parser = argparse.ArgumentParser(description='Untersucht einen Text auf verschiedene NLP Metriken')
 
     parser.add_argument('input_filepath', default='data/input/test.txt', help='Pfad zur Input-Textdatei (default: data/test.txt).')
 
@@ -166,3 +168,16 @@ if __name__ == "__main__":
 
     else:
         print(json.dumps(output_data, indent=4, ensure_ascii=False))
+
+    base_name = os.path.basename(args.input_filepath)
+
+    if base_name.endswith(".txt"):
+        base_name = base_name[:-4]
+
+    if "stylometry" in output_data.get("analysis", {}):
+        plot_dir = os.path.join("data", "plots")
+        img_path = os.path.join(plot_dir, f"plot_{base_name}.png")
+        
+        style_stats = output_data["analysis"]["stylometry"]["details"]
+        plot_pos_stats(style_stats, img_path)
+        print(f"🎨 Plot gespeichert: {img_path}")
