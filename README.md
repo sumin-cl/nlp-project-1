@@ -10,6 +10,8 @@ A modular Python CLI tool for analyzing text complexity, sentiment, stylometry a
 * **Complexity Analysis:** Calculates Flesch Reading Ease score to determine text difficulty.
 * **Sentiment Analysis:** Detects polarity and subjectivity.
 * **Stylometry:** Analyzes Part-of-Speech (POS) distribution.
+* **Visualization:** Generates statistical plots using Matplotlib (e.g., POS distribution, sentence length metrics) and outputs them as PNG/rich-console.
+* **Normalization**: Detects and handles non-standard unicode characters or informal spelling patterns.
 
 Output will be given as JSON.
 
@@ -34,3 +36,10 @@ Generates a complete report including all metrics.
 ### 3. Save output to File
 Use the --output flag to save the JSON result like:
 `python main.py data/input/sample.txt --output data/output/example.txt --task all`
+
+## Sample images
+<p align="center">
+  <img src="assets/screenshot_console.png" width="41%" alt="Console Output">
+  &nbsp; &nbsp;
+  <img src="assets/plot_text_example.png" width="50%" alt="Matplotlib Graph">
+</p>
