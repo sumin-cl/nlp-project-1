@@ -13,6 +13,7 @@ from src.sentiment import sentiment_check
 from src.readability import flesch_simple_check
 from src.stylometry import get_style_stats
 from src.diversity import get_lex_div
+from src.entropy import calculate_entropy
 
 from src.visualization import plot_pos_stats
 
@@ -62,6 +63,7 @@ def run_cli(input_filepath, task):
         add_result("sentiment", sentiment_check(input_text))
         add_result("stylometry", get_style_stats(input_text))
         add_result("diversity", get_lex_div(input_text))
+        add_result("entropy", calculate_entropy(tokens))
 
     elif task == 'readability':
         readability_score = flesch_simple_check(input_text)
@@ -144,6 +146,11 @@ def print_report(data):
         console.print(table)
         console.print("")
 
+    if "entropy" in analysis:
+        entropy = analysis['entropy']
+
+        console.print("Shannon-Entropy: ", entropy)  
+        
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description='Untersucht einen Text auf verschiedene NLP Metriken')
